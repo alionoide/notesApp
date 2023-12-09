@@ -126,6 +126,30 @@ namespace NotesAppAPI
             return id;
         }
 
+        public void AddUser(User user, string password)
+        {
+            using (MySqlConnection cnn = new MySqlConnection(builder.ConnectionString))
+            {
+                cnn.Open();
+
+                string hash = Hasher.Hash(password);
+
+                MySqlCommand command = new MySqlCommand("insert into User (uName, email, displayName, password, salt) " +
+                                                        "value (?, ?, ?, ?, ?);", cnn);
+                command.Parameters.Add(new MySqlParameter("uName", user.Username));
+                command.Parameters.Add(new MySqlParameter("email", user.Email));
+                command.Parameters.Add(new MySqlParameter("displayName", user.DisplayName));
+                command.Parameters.Add(new MySqlParameter("password", hash));
+                command.Parameters.Add(new MySqlParameter("salt", hash));
+
+                var reader = command.ExecuteReader();
+
+                reader.Close();
+                command.Dispose();
+                cnn.Close();
+            }
+        }
+
         public bool ChangePassword(int userID, string password, string newPassword)
         {
             using (MySqlConnection cnn = new MySqlConnection(builder.ConnectionString))
@@ -219,6 +243,50 @@ namespace NotesAppAPI
                 reader.Close();
                 command.Dispose();
                 cnn.Close();
+            }
+        }
+
+        public IEnumerable<User> GetAvaliableUsers(int goalID)
+        {
+            using (MySqlConnection cnn = new MySqlConnection(builder.ConnectionString))
+            {
+                List<User> list = new List<User>();
+
+                cnn.Open();
+
+                MySqlCommand command = new MySqlCommand("select u.userID, u.uName, u.email, u.displayName " +
+                                                        "from User u, Goal g, Subject s " +
+                                                        "where u.userID = s.ownerID and s.subjectID = g.subjectID and g.goalId = ? " +
+                                                        "union " +
+                                                        "select u.userID, u.uName, u.email, u.displayName " +
+                                                        "from User u, SubjectShare ss, Goal g " +
+                                                        "where u.userID = ss.userID and ss.subjectID = g.subjectID and g.goalId = ? " +
+                                                        "union " +
+                                                        "select u.userID, u.uName, u.email, u.displayName " +
+                                                        "from User u, GoalShare gs, Goal g " +
+                                                        "where u.userID = gs.userID and gs.goalId = ?;", cnn);
+                command.Parameters.Add(new MySqlParameter("goalID", goalID));
+                command.Parameters.Add(new MySqlParameter("goalID2", goalID));
+                command.Parameters.Add(new MySqlParameter("goalID3", goalID));
+
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    list.Add(new User
+                        {
+                            ID = reader.GetInt32(0),
+                            Username = reader.GetString(1),
+                            Email = reader.GetString(2),
+                            DisplayName = reader.GetValue(3) == DBNull.Value ? null : (string)reader.GetValue(3),
+                        });
+                }
+
+                reader.Close();
+                command.Dispose();
+                cnn.Close();
+
+                return list;
             }
         }
 
@@ -496,7 +564,7 @@ namespace NotesAppAPI
                             ID = reader.GetInt32(0),
                             Text = reader.GetString(1),
                             Progress = reader.GetDouble(2),
-                            DueDate = reader.GetDateTime(3),
+                            DueDate = reader.GetValue(3) == DBNull.Value ? null : reader.GetDateTime(3),
                             AssignedUser = reader.GetValue(4) == DBNull.Value ? null : new User
                             {
                                 ID = reader.GetInt32(4),

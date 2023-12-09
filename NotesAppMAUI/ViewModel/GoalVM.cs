@@ -99,9 +99,9 @@ namespace NotesAppMAUI.ViewModel
         {
             ErrorMessage = string.Empty;
             vmo.Permission = Goal.Permission;
-            Shell.Current.GoToAsync($"Goal?", new Dictionary<string, object>
+            Shell.Current.GoToAsync($"TaskItem?", new Dictionary<string, object>
             {
-                ["Goal"] = vmo,
+                ["TaskItem"] = vmo,
                 ["User"] = User,
             });
         }
@@ -130,6 +130,21 @@ namespace NotesAppMAUI.ViewModel
             if (Goal.Permission.CanCUD)
             {
                 EditModeEnabled = !EditModeEnabled;
+                if (EditModeEnabled)
+                {
+                    int prevAssignedID = -1;
+                    if (Goal.AssignedUser != null)
+                    {
+                        prevAssignedID = Goal.AssignedUser.ID;
+                    }
+
+                    AvaliableUsers = new ObservableCollection<UserVMO>(api.GetAvaliableUsers(Goal.ID).Select(Converters.Convert));
+
+                    if (prevAssignedID != -1)
+                    {
+                        Goal.AssignedUser = AvaliableUsers.Where(o => o.ID == prevAssignedID).FirstOrDefault();
+                    }
+                } 
             }
         }
 

@@ -59,7 +59,7 @@
                     <TimePicker Time="{Binding Time}" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <Slider Grid.Column="1" Grid.Row="3" Value="{Binding Goal.Progress}" />
-                <Picker Grid.Column="1" Grid.Row="4" SelectedItem="{Binding Goal.AssignedUser}" ItemsSource="{Binding AvaliableUsers}" />
+                <Picker Grid.Column="1" Grid.Row="4" SelectedItem="{Binding Goal.AssignedUser}" ItemsSource="{Binding AvaliableUsers}" ItemDisplayBinding="{Binding NameToShow}"/>
 
                 <VerticalStackLayout Grid.Row="5" Grid.ColumnSpan="2">
                     <HorizontalStackLayout>
@@ -73,13 +73,16 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Label Text="{Binding Goal.Text}" />
-                <ProgressBar Grid.Row="1" Progress="{Binding Goal.Progress}" />
+                <ProgressBar  Progress="{Binding Goal.Progress}" ScaleY="5" HeightRequest="10" />
+                <Label Grid.Row="1" Text="{Binding Goal.Text}" />
 
-                <RefreshView Grid.Row="2"
+                <Label Grid.Row="2" Text="Tasks:" FontSize="Medium" />
+
+                <RefreshView Grid.Row="3"
                         Command="{Binding RefreshCommand}">
                     <CollectionView
                             ItemsSource="{Binding Tasks}"
@@ -93,9 +96,19 @@
                                         <RowDefinition Height="auto" />
                                         <RowDefinition Height="auto" />
                                     </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
 
                                     <Label Grid.Row="0" Text="{Binding Text}" FontSize="Caption" LineBreakMode="WordWrap" MaxLines="2" />
-                                    <ProgressBar Grid.Row="1" Progress="{Binding Progress}" />
+                                    <ProgressBar Grid.Row="1" Progress="{Binding Progress}" ProgressColor="Aqua" />
+
+
+                                    <VerticalStackLayout Grid.Column="1" Grid.RowSpan="3" VerticalOptions="Start">
+                                        <Label Text="{Binding AssignedUser.NameToShow}" HorizontalTextAlignment="End" HorizontalOptions="End" />
+                                        <Label VerticalTextAlignment="End" Text="{Binding DueDate}" HorizontalTextAlignment="End" HorizontalOptions="End" />
+                                    </VerticalStackLayout>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:NotesAppMAUI.ViewModel"
+             xmlns:vmo="clr-namespace:NotesAppMAUI.ViewModel.VMO"
+             x:Class="NotesAppMAUI.View.NewUser"
+             x:DataType="vm:NewUserVM"
+             Title="New User">
+    <ScrollView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Text="Username: " VerticalTextAlignment="Center"/>
+            <Label Grid.Row="1" Text="Email: " VerticalTextAlignment="Center"/>
+            <Label Grid.Row="2" Text="Display Name: " VerticalTextAlignment="Center"/>
+
+            <Entry Grid.Column="1" Grid.Row="0" Text="{Binding User.Username}" />
+            <Entry Grid.Column="1" Grid.Row="1" Text="{Binding User.Email}" />
+            <Entry Grid.Column="1" Grid.Row="2" Text="{Binding User.DisplayName}" />
+
+            <Label Grid.Row="3" Text="Password: " VerticalTextAlignment="Center" />
+            <Label Grid.Row="4" Text="Confirm Password: " VerticalTextAlignment="Center"/>
+
+            <Entry Grid.Column="1" Grid.Row="3" IsPassword="True" Text="{Binding Password}" />
+            <Entry Grid.Column="1" Grid.Row="4" IsPassword="True" Text="{Binding PasswordConfirm}" />
+
+
+            <VerticalStackLayout Grid.Row="5" Grid.ColumnSpan="2">
+                <HorizontalStackLayout>
+                    <Button Command="{Binding SaveCommand}" Text="&#xe7fe; CREATE ACCOUNT" FontFamily="MaterialIcons-Regular" />
+                </HorizontalStackLayout>
+                <Label Text="{Binding ErrorMessage}" TextColor="Red" />
+            </VerticalStackLayout>
+
+        </Grid>
+    </ScrollView>
+
+</ContentPage>

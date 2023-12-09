@@ -13,12 +13,19 @@ namespace NotesAppMAUI.ViewModel.VMO
         private int iD;
         
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(NameToShow))]
         private string username;
         
         [ObservableProperty]
         private string email;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(NameToShow))]
         private string displayName;
+
+        public string NameToShow
+        {
+            get { return DisplayName == null ? Username : DisplayName; }
+        }
     }
 }

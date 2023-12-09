@@ -98,7 +98,10 @@
                                     <Label Grid.Row="1" Text="{Binding Text}" FontSize="Caption" LineBreakMode="WordWrap" MaxLines="2" />
                                     <ProgressBar Grid.Row="2" Progress="{Binding Progress}" />
 
-                                    <Label Grid.RowSpan="2" Grid.Row="1" Grid.Column="1" VerticalTextAlignment="End" Text="{Binding DueDate}" />
+                                    <VerticalStackLayout Grid.Column="1" Grid.RowSpan="3" VerticalOptions="Start">
+                                        <Label Text="{Binding AssignedUser.NameToShow}" HorizontalTextAlignment="End" HorizontalOptions="End" />
+                                        <Label VerticalTextAlignment="End" Text="{Binding DueDate}" HorizontalTextAlignment="End" HorizontalOptions="End" />
+                                    </VerticalStackLayout>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>

@@ -4,6 +4,16 @@
              x:Class="NotesAppMAUI.MainPage"
              x:Name="Login">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="ToolbarItem_Clicked" Text="New Account">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                  FontFamily="MaterialIcons-Regular"
+                  Glyph="&#xe145;"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
     <ScrollView>
         <VerticalStackLayout
             Spacing="25"

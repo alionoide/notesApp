@@ -9,46 +9,69 @@
              Title="Task">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding SaveCommand}" Text="Save">
+        <ToolbarItem Command="{Binding EditCommand}" Text="Edit">
             <ToolbarItem.IconImageSource>
                 <FontImageSource
                   FontFamily="MaterialIcons-Regular"
-                  Glyph="&#xe161;"/>
+                  Glyph="&#xe3c9;"/>
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <ScrollView>
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <Grid IsVisible="{Binding TaskItem.Goal.Permission.CanCUD}">
+            <Grid IsVisible="{Binding EditModeEnabled}">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="500" />
                 </Grid.ColumnDefinitions>
 
-                <Entry Grid.Row="0" Text="{Binding TaskItem.Text}" />
-                <Editor Grid.Row="1" Text="{Binding TaskItem.DueDate}" HeightRequest="100" />
-                <Entry Grid.Row="2" Text="{Binding TaskItem.Progress}" />
+                <Label Grid.Row="1" Text="Text: " VerticalOptions="Start" Padding="5" />
+                <Label Grid.Row="2" Text="Due Date: " VerticalOptions="Center" Padding="5" />
+                <Label Grid.Row="3" Text="Progress: " VerticalOptions="Center" Padding="5" />
+                <Label Grid.Row="4" Text="Assigned User: " VerticalOptions="Center" Padding="5" />
+
+                <Editor Grid.Column="1" Grid.Row="1" Text="{Binding TaskItem.Text}" HeightRequest="100" />
+                <HorizontalStackLayout Grid.Column="1" Grid.Row="2">
+                    <DatePicker Date="{Binding TaskItem.DueDate}" VerticalOptions="Center" />
+                    <TimePicker Time="{Binding Time}" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <Slider Grid.Column="1" Grid.Row="3" Value="{Binding TaskItem.Progress}" />
+                <Picker Grid.Column="1" Grid.Row="4" SelectedItem="{Binding TaskItem.AssignedUser}" ItemsSource="{Binding AvaliableUsers}" ItemDisplayBinding="{Binding NameToShow}" />
+                
+                <VerticalStackLayout Grid.Row="5" Grid.ColumnSpan="2">
+                    <HorizontalStackLayout>
+                        <Button Command="{Binding SaveCommand}" Text="&#xe161; SAVE" FontFamily="MaterialIcons-Regular" />
+                        <Button Command="{Binding DeleteCommand}" Text="&#xe872; DELETE" FontFamily="MaterialIcons-Regular" TextColor="Red"/>
+                    </HorizontalStackLayout>
+                    <Label Text="{Binding ErrorMessage}" TextColor="Red" />
+                </VerticalStackLayout>
             </Grid>
-            <Grid IsVisible="{Binding TaskItem.Goal.Permission.CanCUD, Converter={toolkit:InvertedBoolConverter}}">
+            <Grid IsVisible="{Binding EditModeEnabled, Converter={toolkit:InvertedBoolConverter}}">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
 
-                <Label Text="{Binding TaskItem.Text}" />
-                <ProgressBar Progress="{Binding TaskItem.Progress}" />
+                <ProgressBar  Progress="{Binding TaskItem.Progress}" ScaleY="5" HeightRequest="10" />
+                <Label Grid.Row="1" Text="{Binding TaskItem.Text}" />
+
+                
+                <Label Grid.Row="1" Grid.Column="1" Text="{Binding TaskItem.AssignedUser.NameToShow}" />
             </Grid>
-
         </Grid>
     </ScrollView>
 

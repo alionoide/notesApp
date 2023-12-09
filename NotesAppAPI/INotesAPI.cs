@@ -12,6 +12,7 @@ namespace NotesAppAPI
         User Login(string username, string password);
         void UpdateUser(User user);
         bool ChangePassword(int userID, string password, string newPassword);
+        IEnumerable<User> GetAvaliableUsers(int goalID);
         IEnumerable<Tuple<Subject, Permission>> GetSubjects(int userID);
         int AddSubject(Subject subject);
         void UpdateSubject(Subject subject);
@@ -28,5 +29,6 @@ namespace NotesAppAPI
         void DeleteTask(TaskItem task);
         IEnumerable<Tuple<Subject, Permission>> GetSharedSubjects(int userID);
         IEnumerable<Tuple<Goal, Permission>> GetSharedGoals(int userID);
+        void AddUser(User user, string password);
     }
 }

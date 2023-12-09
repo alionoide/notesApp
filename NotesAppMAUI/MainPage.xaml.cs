@@ -43,5 +43,10 @@ namespace NotesAppMAUI
                 CounterBtn.Text = "Invalid Login";
             }
         }
+
+        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        {
+            AppShell.Current.GoToAsync($"NewUser");
+        }
     }
 }

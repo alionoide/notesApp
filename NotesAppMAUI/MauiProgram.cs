@@ -39,6 +39,9 @@ namespace NotesAppMAUI
             builder.Services.AddTransient(typeof(Profile));
             builder.Services.AddTransient(typeof(ProfileVM));
 
+            builder.Services.AddTransient(typeof(NewUser));
+            builder.Services.AddTransient(typeof(NewUserVM));
+
 
             return builder.Build();
         }
