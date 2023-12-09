@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:NotesAppMAUI.ViewModel"
              xmlns:vmo="clr-namespace:NotesAppMAUI.ViewModel.VMO"
-             x:Class="NotesAppMAUI.View.SubjectList"
-             x:DataType="vm:SubjectListVM"
-             Title="My Subjects">
+             x:Class="NotesAppMAUI.View.Shared"
+             x:DataType="vm:SharedVM"
+             Title="Shared With Me">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding AddSubjectCommand}" Text="Add Subject">
@@ -27,7 +27,7 @@
             <RefreshView Grid.Row="1"
                 Command="{Binding RefreshCommand}"
                              IsRefreshing="{Binding IsRefreshing}">
-                <CollectionView x:Name="SubjectListView"
+                <CollectionView x:Name="SharedView"
                                 ItemsSource="{Binding Subjects}"
                                 SelectionMode="Single"
                                 SelectionChangedCommand="{Binding GoToSubjectCommand}"

@@ -62,6 +62,9 @@
 	  <Compile Update="View\NewUser.xaml.cs">
 	    <DependentUpon>NewUser.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="View\Shared.xaml.cs">
+	    <DependentUpon>Shared.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="View\TaskItem.xaml.cs">
 	    <DependentUpon>TaskItem.xaml</DependentUpon>
 	  </Compile>
@@ -81,6 +84,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="View\NewUser.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\Shared.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\TaskItem.xaml">

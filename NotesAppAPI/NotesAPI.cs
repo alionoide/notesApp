@@ -496,7 +496,8 @@ namespace NotesAppAPI
                 cnn.Open();
 
                 MySqlCommand command = new MySqlCommand("select s.subjectID, s.name, s.description, s.color, u.userID, u.uName, u.email, u.displayName " +
-                                                        "from Subject s natural join User u " +
+                                                        "from Subject s " +
+                                                        "join User u on s.ownerID = u.userID " +
                                                         "where s.ownerID = ?", cnn);
                 command.Parameters.Add(new MySqlParameter("ownerID", userID));
 

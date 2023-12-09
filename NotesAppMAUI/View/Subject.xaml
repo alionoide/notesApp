@@ -75,7 +75,8 @@
 
                 <Label Grid.Row="1" Text="Goals:" FontSize="Medium" Padding="5" />
                 <RefreshView Grid.Row="2"
-                        Command="{Binding RefreshCommand}">
+                        Command="{Binding RefreshCommand}"
+                             IsRefreshing="{Binding IsRefreshing}">
                     <CollectionView
                             ItemsSource="{Binding Goals}"
                             SelectionMode="Single"

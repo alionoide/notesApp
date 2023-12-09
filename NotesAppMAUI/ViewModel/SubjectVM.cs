@@ -31,6 +31,9 @@ namespace NotesAppMAUI.ViewModel
         [ObservableProperty]
         private bool editModeEnabled;
 
+        [ObservableProperty]
+        private bool isRefreshing;
+
         public ICommand RefreshCommand { get; set; }
         public ICommand AddGoalCommand { get; set; }
         public ICommand GoToGoalCommand { get; set; }
@@ -65,6 +68,7 @@ namespace NotesAppMAUI.ViewModel
         private void refreshList()
         {
             Goals = new ObservableCollection<GoalVMO>(api.GetGoals(Subject.ID).Select(o => Converters.Convert(o)));
+            IsRefreshing = false;
         }
 
         private void addGoal()

@@ -23,7 +23,7 @@
         </Tab>
         <Tab Title="Shared"
              Route="Shared">
-            <ShellContent ContentTemplate="{DataTemplate views:SubjectList}" />
+            <ShellContent ContentTemplate="{DataTemplate views:Shared}" />
             <Tab.Icon>
                 <FontImageSource
                   FontFamily="MaterialIcons-Regular"

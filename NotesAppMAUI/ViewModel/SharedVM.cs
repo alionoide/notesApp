@@ -14,7 +14,7 @@ using System.Windows.Input;
 namespace NotesAppMAUI.ViewModel
 {
     [QueryProperty(nameof(User), "User")]
-    public partial class SubjectListVM : ObservableObject
+    public partial class SharedVM : ObservableObject
     {
         [ObservableProperty]
         private UserVMO user;
@@ -32,7 +32,7 @@ namespace NotesAppMAUI.ViewModel
 
         INotesAPI api;
 
-        public SubjectListVM(INotesAPI api)
+        public SharedVM(INotesAPI api)
         {
             this.api = api;
 

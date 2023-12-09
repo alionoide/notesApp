@@ -37,6 +37,9 @@ namespace NotesAppMAUI.ViewModel
         [ObservableProperty]
         private bool editModeEnabled;
 
+        [ObservableProperty]
+        private bool isRefreshing;
+
         public ICommand RefreshCommand { get; set; }
         public ICommand AddTaskCommand { get; set; }
         public ICommand GoToTaskCommand { get; set; }
@@ -73,6 +76,7 @@ namespace NotesAppMAUI.ViewModel
         private void refreshList()
         {
             Tasks = new ObservableCollection<TaskItemVMO>(api.GetTasks(Goal.ID).Select(o => Converters.Convert(o)));
+            IsRefreshing = false;
         }
 
         private void addTask()
