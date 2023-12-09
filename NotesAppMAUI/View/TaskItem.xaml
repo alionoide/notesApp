@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:NotesAppMAUI.ViewModel"
+             xmlns:vmo="clr-namespace:NotesAppMAUI.ViewModel.VMO"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="NotesAppMAUI.View.TaskItem"
+             x:DataType="vm:TaskItemVM"
+             Title="Task">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding SaveCommand}" Text="Save">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                  FontFamily="MaterialIcons-Regular"
+                  Glyph="&#xe161;"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid IsVisible="{Binding TaskItem.Goal.Permission.CanCUD}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    
+                </Grid.ColumnDefinitions>
+
+                <Entry Grid.Row="0" Text="{Binding TaskItem.Text}" />
+                <Editor Grid.Row="1" Text="{Binding TaskItem.DueDate}" HeightRequest="100" />
+                <Entry Grid.Row="2" Text="{Binding TaskItem.Progress}" />
+            </Grid>
+            <Grid IsVisible="{Binding TaskItem.Goal.Permission.CanCUD, Converter={toolkit:InvertedBoolConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Label Text="{Binding TaskItem.Text}" />
+                <ProgressBar Progress="{Binding TaskItem.Progress}" />
+            </Grid>
+
+        </Grid>
+    </ScrollView>
+
+</ContentPage>

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NotesAppMAUI.MainPage"
+             x:Name="Login">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center"
+            MaximumWidthRequest="250">
+
+            <Entry
+                x:Name="UsernameEry" />
+
+            <Entry
+                x:Name="PasswordEry"
+                IsPassword="True" 
+                Completed="OnCounterClicked"/>
+
+
+            <Button
+                x:Name="CounterBtn"
+                Text="Login"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="OnCounterClicked"
+                HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

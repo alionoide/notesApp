@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="NotesAppMAUI.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:NotesAppMAUI"
+    xmlns:views="clr-namespace:NotesAppMAUI.View"
+    Shell.FlyoutBehavior="Disabled">
+
+    <ShellContent Title="Login"
+                  Route="Login"
+                  ContentTemplate="{DataTemplate local:MainPage}" />
+
+    <TabBar>
+        <Tab Title="My Subjects"
+             Route="Subjects">
+            <ShellContent ContentTemplate="{DataTemplate views:SubjectList}" />
+            <Tab.Icon>
+                <FontImageSource
+                  FontFamily="MaterialIcons-Regular"
+                  Glyph="&#xe873;"/>
+            </Tab.Icon>
+        </Tab>
+        <Tab Title="Shared"
+             Route="Shared">
+            <ShellContent ContentTemplate="{DataTemplate views:SubjectList}" />
+            <Tab.Icon>
+                <FontImageSource
+                  FontFamily="MaterialIcons-Regular"
+                  Glyph="&#xf233;"/>
+            </Tab.Icon>
+        </Tab>
+        <Tab Title="Profile"
+             Route="Profile">
+            <ShellContent  ContentTemplate="{DataTemplate views:Profile}" />
+            <Tab.Icon>
+                <FontImageSource
+                  FontFamily="MaterialIcons-Regular"
+                  Glyph="&#xe853;"/>
+            </Tab.Icon>
+        </Tab>
+    </TabBar>
+
+</Shell>

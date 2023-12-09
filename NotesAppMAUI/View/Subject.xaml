@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:NotesAppMAUI.ViewModel"
+             xmlns:vmo="clr-namespace:NotesAppMAUI.ViewModel.VMO"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="NotesAppMAUI.View.Subject"
+             x:DataType="vm:SubjectVM"
+             Title="{Binding Subject.Name}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding AddGoalCommand}" Text="Add Goal">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                  FontFamily="MaterialIcons-Regular"
+                  Glyph="&#xe145;"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Command="{Binding EditCommand}" Text="Edit">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                  FontFamily="MaterialIcons-Regular"
+                  Glyph="&#xe3c9;"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid IsVisible="{Binding EditModeEnabled}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="500" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Text="Name: " VerticalOptions="Center" Padding="5" />
+                <Label Grid.Row="1" Text="Description: " VerticalOptions="Start" Padding="5" />
+                <Label Grid.Row="2" Text="Color: " VerticalOptions="Center" Padding="5" />
+
+                <Entry Grid.Column="1" Grid.Row="0" Text="{Binding Subject.Name}" />
+                <Editor Grid.Column="1" Grid.Row="1" Text="{Binding Subject.Description}" HeightRequest="100" />
+                <Entry Grid.Column="1" Grid.Row="2" Text="{Binding Subject.Color}" />
+
+                <VerticalStackLayout Grid.Row="3" Grid.ColumnSpan="2">
+                    <HorizontalStackLayout>
+                        <Button Command="{Binding SaveCommand}" Text="&#xe161; SAVE" FontFamily="MaterialIcons-Regular" />
+                        <Button Command="{Binding DeleteCommand}" Text="&#xe872; DELETE" FontFamily="MaterialIcons-Regular" TextColor="Red"/>
+                    </HorizontalStackLayout>
+                    <Label Text="{Binding ErrorMessage}" TextColor="Red" />
+                </VerticalStackLayout>
+            </Grid>
+            
+            
+            <Grid IsVisible="{Binding EditModeEnabled, Converter={toolkit:InvertedBoolConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Text="{Binding Subject.Description}" Padding="3" />
+
+
+
+                <Label Grid.Row="1" Text="Goals:" FontSize="Medium" Padding="5" />
+                <RefreshView Grid.Row="2"
+                        Command="{Binding RefreshCommand}">
+                    <CollectionView
+                            ItemsSource="{Binding Goals}"
+                            SelectionMode="Single"
+                            SelectionChangedCommand="{Binding GoToGoalCommand}"
+                            SelectionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=SelectedItem}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="vmo:GoalVMO">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Row="0" Text="{Binding Name}" FontSize="Body" LineBreakMode="TailTruncation" MaxLines="1" />
+                                    <Label Grid.Row="1" Text="{Binding Text}" FontSize="Caption" LineBreakMode="WordWrap" MaxLines="2" />
+                                    <ProgressBar Grid.Row="2" Progress="{Binding Progress}" />
+
+                                    <Label Grid.RowSpan="2" Grid.Row="1" Grid.Column="1" VerticalTextAlignment="End" Text="{Binding DueDate}" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </RefreshView>
+            </Grid>
+        </Grid>
+    </ScrollView>
+</ContentPage>

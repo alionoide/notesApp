@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace NotesAppAPI.Models
+{
+    public class TaskItem
+    {
+        public int ID { get; set; }
+        public Goal Goal { get; set; }
+        public User AssignedUser { get; set; }
+        public string Text { get; set; }
+        public double Progress { get; set; }
+        public DateTime? DueDate { get; set; }
+    }
+}
