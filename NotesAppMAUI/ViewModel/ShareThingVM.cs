@@ -29,6 +29,9 @@ namespace NotesAppMAUI.ViewModel
         private ObservableCollection<UserVMO> avaliableUsers;
 
         [ObservableProperty]
+        private ObservableCollection<UserVMO> currentUsers;
+
+        [ObservableProperty]
         private PermissionVMO selectedPermission;
 
         [ObservableProperty]
@@ -46,12 +49,14 @@ namespace NotesAppMAUI.ViewModel
         INotesAPI api;
 
         public ICommand ShareCommand { get; set; }
+        public ICommand RemoveUserCommand { get; set; }
 
         public ShareThingVM(INotesAPI api)
         {
             this.api = api;
 
             ShareCommand = new RelayCommand(share);
+            RemoveUserCommand = new RelayCommand<UserVMO>(removeUser);
         }
 
         public void Loaded()
@@ -59,6 +64,7 @@ namespace NotesAppMAUI.ViewModel
             User = (App.Current.MainPage as AppShell).CurrentUser;
             AvaliableUsers = new ObservableCollection<UserVMO>(api.GetAllUsersNotCurrent(User.ID).Select(Converters.Convert));
             AvaliablePermissions = new ObservableCollection<PermissionVMO>(api.GetPermissions().Select(Converters.Convert));
+            refreshCurrentUsers();
         }
 
         private void share()
@@ -81,17 +87,53 @@ namespace NotesAppMAUI.ViewModel
             }
             else
             {
+                try
+                {
+                    if (Goal != null)
+                    {
+                        api.ShareGoal(Goal.ID, SelectedUser.ID, SelectedPermission.ID, User.ID);
+                        Goal = null;
+                    }
+                    if (Subject != null)
+                    {
+                        api.ShareSubject(Subject.ID, SelectedUser.ID, SelectedPermission.ID, User.ID);
+                        Subject = null;
+                    }
+                    navigateBack();
+                }
+                catch (Exception)
+                {
+                    ErrorMessage = "Error while sharing, is user already added?";
+                }
+            }
+        }
+
+        private async void removeUser(UserVMO userToRemove)
+        {
+            bool confirm = await AppShell.Current.DisplayAlert("Confirm Remove", "Are you sure you want to remove \"" + userToRemove.NameToShow + "\"?", "Yes, Remove", "No, Cancel");
+            if (confirm)
+            {
                 if (Goal != null)
                 {
-                    api.ShareGoal(Goal.ID, SelectedUser.ID, SelectedPermission.ID, User.ID);
-                    Goal = null;
+                    api.RemoveUserFromGoal(Goal.ID, userToRemove.ID);
                 }
                 if (Subject != null)
                 {
-                    api.ShareSubject(Subject.ID, SelectedUser.ID, SelectedPermission.ID, User.ID);
-                    Subject = null;
+                    api.RemoveUserFromSubject(Subject.ID, userToRemove.ID);
                 }
-                navigateBack();
+                refreshCurrentUsers();
+            }
+        }
+
+        private void refreshCurrentUsers()
+        {
+            if (Goal != null)
+            {
+                CurrentUsers = new ObservableCollection<UserVMO>(api.GetUsersGoalSharedWith(Goal.ID).Select(o => Converters.Convert(o)));
+            }
+            if (Subject != null)
+            {
+                CurrentUsers = new ObservableCollection<UserVMO>(api.GetUsersSubSharedWith(Subject.ID).Select(o => Converters.Convert(o)));
             }
         }
 

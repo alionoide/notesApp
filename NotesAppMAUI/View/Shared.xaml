@@ -31,9 +31,18 @@
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+
 
                                 <Label Grid.Row="0" Text="{Binding Name}" FontSize="Medium" LineBreakMode="TailTruncation" MaxLines="1" />
                                 <Label Grid.Row="1" Text="{Binding Description}" FontSize="Caption" LineBreakMode="WordWrap" MaxLines="2" />
+                                <HorizontalStackLayout Grid.Column="1">
+                                    <Label Text="Owner: " FontSize="Caption" Margin="5,0,5,0" />
+                                    <Label Text="{Binding Owner.NameToShow}" FontSize="Caption" />
+                                </HorizontalStackLayout>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -63,11 +72,17 @@
 
                                 <Label Grid.Row="0" Text="{Binding Name}" FontSize="Body" LineBreakMode="TailTruncation" MaxLines="1" />
                                 <Label Grid.Row="1" Text="{Binding Text}" FontSize="Caption" LineBreakMode="WordWrap" MaxLines="2" />
-                                <ProgressBar Grid.Row="2" Progress="{Binding Progress}" />
+                                <ProgressBar Grid.Row="2" Grid.ColumnSpan="2" Progress="{Binding Progress}" />
 
-                                <VerticalStackLayout Grid.Column="1" Grid.RowSpan="3" VerticalOptions="Start">
-                                    <Label Text="{Binding AssignedUser.NameToShow}" HorizontalTextAlignment="End" HorizontalOptions="End" />
-                                    <Label VerticalTextAlignment="End" Text="{Binding DueDate}" HorizontalTextAlignment="End" HorizontalOptions="End" />
+                                <VerticalStackLayout Grid.Column="1" Grid.RowSpan="2" VerticalOptions="Start">
+                                    <HorizontalStackLayout HorizontalOptions="End">
+                                        <Label Text="Assigned to: " FontSize="Caption" Margin="5,0,5,0" IsVisible="{Binding AssignedUserNotNull}" />
+                                        <Label Text="{Binding AssignedUser.NameToShow}"  FontSize="Caption" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout HorizontalOptions="End">
+                                        <Label Text="Due: " FontSize="Caption" Margin="5,0,5,0" IsVisible="{Binding DueDateHasValue}" />
+                                        <Label Text="{Binding DueDate}"  FontSize="Caption" />
+                                    </HorizontalStackLayout>
                                 </VerticalStackLayout>
                             </Grid>
                         </DataTemplate>

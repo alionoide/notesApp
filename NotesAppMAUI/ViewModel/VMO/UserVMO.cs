@@ -27,5 +27,8 @@ namespace NotesAppMAUI.ViewModel.VMO
         {
             get { return DisplayName == null ? Username : DisplayName; }
         }
+
+        [ObservableProperty]
+        private PermissionVMO permission;
     }
 }

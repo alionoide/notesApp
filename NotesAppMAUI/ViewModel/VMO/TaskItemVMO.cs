@@ -16,6 +16,7 @@ namespace NotesAppMAUI.ViewModel.VMO
         private GoalVMO goal;
         
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(AssignedUserNotNull))]
         private UserVMO assignedUser;
         
         [ObservableProperty]
@@ -25,9 +26,19 @@ namespace NotesAppMAUI.ViewModel.VMO
         private double progress;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(DueDateHasValue))]
         private DateTime? dueDate;
 
         [ObservableProperty]
         private PermissionVMO permission;
+
+        public bool AssignedUserNotNull
+        {
+            get { return AssignedUser != null; }
+        }
+        public bool DueDateHasValue
+        {
+            get { return DueDate.HasValue; }
+        }
     }
 }

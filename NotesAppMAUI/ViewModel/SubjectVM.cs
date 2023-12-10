@@ -34,6 +34,9 @@ namespace NotesAppMAUI.ViewModel
         [ObservableProperty]
         private bool isRefreshing;
 
+        [ObservableProperty]
+        private bool showComplete;
+
         public ICommand RefreshCommand { get; set; }
         public ICommand AddGoalCommand { get; set; }
         public ICommand GoToGoalCommand { get; set; }
@@ -42,6 +45,7 @@ namespace NotesAppMAUI.ViewModel
         public ICommand DeleteCommand { get; set; }
         public ICommand ShareCommand { get; set; }
 
+        List<GoalVMO> unfilteredGoals;
 
         INotesAPI api;
 
@@ -56,6 +60,8 @@ namespace NotesAppMAUI.ViewModel
             DeleteCommand = new RelayCommand(delete);
             EditCommand = new RelayCommand(edit);
             ShareCommand = new RelayCommand(share);
+
+            this.PropertyChanged += vm_PropertyChanged;
         }
 
         public void Loaded()
@@ -65,10 +71,31 @@ namespace NotesAppMAUI.ViewModel
             refreshList();
         }
 
+        private void vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ShowComplete))
+            {
+                filterList();
+            }
+        }
+
         private void refreshList()
         {
-            Goals = new ObservableCollection<GoalVMO>(api.GetGoals(Subject.ID).Select(o => Converters.Convert(o)));
+            unfilteredGoals = api.GetGoals(Subject.ID).Select(o => Converters.Convert(o)).ToList();
+            filterList();
             IsRefreshing = false;
+        }
+
+        private void filterList()
+        {
+            if (ShowComplete)
+            {
+                Goals = new ObservableCollection<GoalVMO>(unfilteredGoals);
+            }
+            else
+            {
+                Goals = new ObservableCollection<GoalVMO>(unfilteredGoals.Where(o => o.Progress < 1));
+            }
         }
 
         private void addGoal()
@@ -98,6 +125,7 @@ namespace NotesAppMAUI.ViewModel
             {
                 ["Goal"] = vmo,
                 ["User"] = User,
+                ["DueDate"] = vmo.DueDate.HasValue ? vmo.DueDate.Value : DateTime.MinValue,
             });
         }
         private void save()

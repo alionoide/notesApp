@@ -622,6 +622,100 @@ namespace NotesAppAPI
             }
         }
 
+        public IEnumerable<Tuple<User, Permission>> GetUsersGoalSharedWith(int goalID)
+        {
+            using (MySqlConnection cnn = new MySqlConnection(builder.ConnectionString))
+            {
+                List<Tuple<User, Permission>> list = new List<Tuple<User, Permission>>();
+
+                cnn.Open();
+
+                MySqlCommand command = new MySqlCommand("select u.userID, u.uName, u.email, u.displayName, p.* " +
+                                                        "from GoalShare gs " +
+                                                        "join User u on gs.userID = u.userID " +
+                                                        "join Permission p on gs.permissionID = p.permissionID " +
+                                                        "where gs.goalID = ?;", cnn);
+                command.Parameters.Add(new MySqlParameter("userID", goalID));
+
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    list.Add(new Tuple<User, Permission>(
+                        new User
+                        {
+                            ID = reader.GetInt32(0),
+                            Username = reader.GetString(1),
+                            Email = reader.GetString(2),
+                            DisplayName = reader.GetValue(3) == DBNull.Value ? null : (string)reader.GetValue(3),
+                        },
+                        new Permission
+                        {
+                            ID = reader.GetInt32(4),
+                            Name = reader.GetString(5),
+                            IsAdmin = reader.GetBoolean(6),
+                            CanCUD = reader.GetBoolean(7),
+                            CanShare = reader.GetBoolean(8),
+                            CanAssign = reader.GetBoolean(9),
+                            CanProgress = reader.GetBoolean(10),
+                        }));
+                }
+
+                reader.Close();
+                command.Dispose();
+                cnn.Close();
+
+                return list;
+            }
+        }
+
+        public IEnumerable<Tuple<User, Permission>> GetUsersSubSharedWith(int subjectID)
+        {
+            using (MySqlConnection cnn = new MySqlConnection(builder.ConnectionString))
+            {
+                List<Tuple<User, Permission>> list = new List<Tuple<User, Permission>>();
+
+                cnn.Open();
+
+                MySqlCommand command = new MySqlCommand("select u.userID, u.uName, u.email, u.displayName, p.* " +
+                                                        "from SubjectShare ss " +
+                                                        "join User u on ss.userID = u.userID " +
+                                                        "join Permission p on ss.permissionID = p.permissionID " +
+                                                        "where ss.subjectID = ?;", cnn);
+                command.Parameters.Add(new MySqlParameter("subjectID", subjectID));
+
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    list.Add(new Tuple<User, Permission>(
+                        new User
+                        {
+                            ID = reader.GetInt32(0),
+                            Username = reader.GetString(1),
+                            Email = reader.GetString(2),
+                            DisplayName = reader.GetValue(3) == DBNull.Value ? null : (string)reader.GetValue(3),
+                        },
+                        new Permission
+                        {
+                            ID = reader.GetInt32(4),
+                            Name = reader.GetString(5),
+                            IsAdmin = reader.GetBoolean(6),
+                            CanCUD = reader.GetBoolean(7),
+                            CanShare = reader.GetBoolean(8),
+                            CanAssign = reader.GetBoolean(9),
+                            CanProgress = reader.GetBoolean(10),
+                        }));
+                }
+
+                reader.Close();
+                command.Dispose();
+                cnn.Close();
+
+                return list;
+            }
+        }
+
         public User Login(string username, string password)
         {
             using (MySqlConnection cnn = new MySqlConnection(builder.ConnectionString))
@@ -656,6 +750,44 @@ namespace NotesAppAPI
                 cnn.Close();
 
                 return user;
+            }
+        }
+
+        public void RemoveUserFromGoal(int goalID, int userID)
+        {
+            using (MySqlConnection cnn = new MySqlConnection(builder.ConnectionString))
+            {
+                cnn.Open();
+
+                MySqlCommand command = new MySqlCommand("delete from GoalShare where userID = ? and goalID = ?;", cnn);
+                command.Parameters.Add(new MySqlParameter("userID", userID));
+                command.Parameters.Add(new MySqlParameter("goalID", goalID));
+
+
+                var reader = command.ExecuteReader();
+
+                reader.Close();
+                command.Dispose();
+                cnn.Close();
+            }
+        }
+
+        public void RemoveUserFromSubject(int subjectID, int userID)
+        {
+            using (MySqlConnection cnn = new MySqlConnection(builder.ConnectionString))
+            {
+                cnn.Open();
+
+                MySqlCommand command = new MySqlCommand("delete from SubjectShare where userID = ? and subjectID = ?;", cnn);
+                command.Parameters.Add(new MySqlParameter("userID", userID));
+                command.Parameters.Add(new MySqlParameter("subjectID", subjectID));
+
+
+                var reader = command.ExecuteReader();
+
+                reader.Close();
+                command.Dispose();
+                cnn.Close();
             }
         }
 

@@ -14,6 +14,7 @@ namespace NotesAppMAUI.ViewModel
 {
     [QueryProperty(nameof(User), "User")]
     [QueryProperty(nameof(TaskItem), "TaskItem")]
+    [QueryProperty(nameof(DueDate), "DueDate")]
     public partial class TaskItemVM : ObservableObject
     {
         [ObservableProperty]
@@ -29,6 +30,9 @@ namespace NotesAppMAUI.ViewModel
         private TimeSpan? time;
 
         [ObservableProperty]
+        private DateTime dueDate;
+
+        [ObservableProperty]
         private string errorMessage;
 
         [ObservableProperty]
@@ -37,6 +41,7 @@ namespace NotesAppMAUI.ViewModel
         public ICommand SaveCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
+        public ICommand ProgressChangedCommand { get; set; }
 
 
         INotesAPI api;
@@ -48,12 +53,14 @@ namespace NotesAppMAUI.ViewModel
             SaveCommand = new RelayCommand(save);
             DeleteCommand = new RelayCommand(delete);
             EditCommand = new RelayCommand(edit);
+            ProgressChangedCommand = new RelayCommand(save);
         }
 
         public void Loaded()
         {
             User = (App.Current.MainPage as AppShell).CurrentUser;
-            
+
+            TaskItem.DueDate = DueDate == DateTime.MinValue ? null : DueDate;
             Time = TaskItem.DueDate.HasValue ? new TimeSpan(TaskItem.DueDate.Value.Hour, TaskItem.DueDate.Value.Minute, TaskItem.DueDate.Value.Second) : null;
         }
 

@@ -31,6 +31,10 @@ namespace NotesAppAPI
         void DeleteTask(TaskItem task);
         IEnumerable<Tuple<Subject, Permission>> GetSharedSubjects(int userID);
         IEnumerable<Tuple<Goal, Permission>> GetSharedGoals(int userID);
+        IEnumerable<Tuple<User, Permission>> GetUsersSubSharedWith(int subjectID);
+        IEnumerable<Tuple<User, Permission>> GetUsersGoalSharedWith(int goalID);
+        void RemoveUserFromGoal(int goalID, int userID);
+        void RemoveUserFromSubject(int subjectID, int userID);
         void AddUser(User user, string password);
     }
 }

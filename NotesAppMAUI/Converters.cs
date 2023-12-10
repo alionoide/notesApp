@@ -140,6 +140,13 @@ namespace NotesAppMAUI
             return vmo;
         }
 
+        internal static UserVMO Convert(Tuple<User, Permission> model)
+        {
+            UserVMO vmo = Convert(model.Item1);
+            vmo.Permission = Convert(model.Item2);
+            return vmo;
+        }
+
         private static SubjectVMO Convert(Subject model)
         {
             if (model == null) { return null; }

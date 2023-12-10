@@ -8,45 +8,84 @@
              Title="Share">
     <ScrollView>
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <HorizontalStackLayout Grid.ColumnSpan="2">
-                <Label Text="Sharing " FontSize="Medium" Margin="5,0,5,0" />
-                <Label Text="{Binding Subject.Name}" FontSize="Medium" FontAttributes="Bold" />
-                <Label Text="{Binding Goal.Name}" FontSize="Medium" FontAttributes="Bold" />
-            </HorizontalStackLayout>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="1" Text="With user: " VerticalOptions="Center" />
-            <Picker Grid.Row="1" Grid.Column="1" ItemsSource="{Binding AvaliableUsers}" SelectedItem="{Binding SelectedUser}" ItemDisplayBinding="{Binding NameToShow}" />
+                <HorizontalStackLayout Grid.ColumnSpan="2">
+                    <Label Text="Sharing " FontSize="Medium" Margin="5,0,5,0" />
+                    <Label Text="{Binding Subject.Name}" FontSize="Medium" FontAttributes="Bold" />
+                    <Label Text="{Binding Goal.Name}" FontSize="Medium" FontAttributes="Bold" />
+                </HorizontalStackLayout>
+
+                <Label Grid.Row="1" Text="With user: " VerticalOptions="Center" />
+                <Picker Grid.Row="1" Grid.Column="1" ItemsSource="{Binding AvaliableUsers}" SelectedItem="{Binding SelectedUser}" ItemDisplayBinding="{Binding NameToShow}" />
     
-            <Label Grid.Row="2" Text="With permission: " VerticalOptions="Center" />
-            <Picker Grid.Row="2" Grid.Column="1" ItemsSource="{Binding AvaliablePermissions}" SelectedItem="{Binding SelectedPermission}" ItemDisplayBinding="{Binding Name}" />
+                <Label Grid.Row="2" Text="With permission: " VerticalOptions="Center" />
+                <Picker Grid.Row="2" Grid.Column="1" ItemsSource="{Binding AvaliablePermissions}" SelectedItem="{Binding SelectedPermission}" ItemDisplayBinding="{Binding Name}" />
 
-            <Label Grid.Row="3" Grid.ColumnSpan="2" Text="They will be able to: " />
+                <Label Grid.Row="3" Grid.ColumnSpan="2" Text="They will be able to: " />
 
-            <HorizontalStackLayout Grid.Row="4" Grid.ColumnSpan="2">
-                <Label Margin="5,0,5,0" Text="Admin - Can do everything: " IsVisible="{Binding SelectedPermission.IsAdmin}" FontAttributes="Bold" />
-                <Label Margin="5,0,5,0" Text="Create, Update, and Delete   " IsVisible="{Binding SelectedPermission.CanCUD}" />
-                <Label Margin="5,0,5,0" Text="Assign Users   " IsVisible="{Binding SelectedPermission.CanAssign}" />
-                <Label Margin="5,0,5,0" Text="Share With Others   " IsVisible="{Binding SelectedPermission.CanShare}" />
-                <Label Margin="5,0,5,0" Text="Progress Items   " IsVisible="{Binding SelectedPermission.CanProgress}"/>
-                <Label Margin="5,0,5,0" Text="View" />
-            </HorizontalStackLayout>
+                <FlexLayout Grid.Row="4" Grid.ColumnSpan="2" Wrap="Wrap">
+                    <Label Margin="5,0,5,0" Text="Admin - Can do everything: " IsVisible="{Binding SelectedPermission.IsAdmin}" FontAttributes="Bold" />
+                    <Label Margin="5,0,5,0" Text="Create, Update, and Delete   " IsVisible="{Binding SelectedPermission.CanCUD}" />
+                    <Label Margin="5,0,5,0" Text="Assign Users   " IsVisible="{Binding SelectedPermission.CanAssign}" />
+                    <Label Margin="5,0,5,0" Text="Share With Others   " IsVisible="{Binding SelectedPermission.CanShare}" />
+                    <Label Margin="5,0,5,0" Text="Progress Items   " IsVisible="{Binding SelectedPermission.CanProgress}"/>
+                    <Label Margin="5,0,5,0" Text="View" />
+                </FlexLayout>
 
-            <Button Grid.Row="5" Grid.ColumnSpan="2" Command="{Binding ShareCommand}" Text="&#xe7fe; SHARE" FontFamily="MaterialIcons-Regular" Margin="10" HorizontalOptions="Start"/>
+                <Button Grid.Row="5" Grid.ColumnSpan="2" Command="{Binding ShareCommand}" Text="&#xe7fe; SHARE" FontFamily="MaterialIcons-Regular" Margin="10" HorizontalOptions="Start"/>
+                <Label Grid.Row="6" Grid.ColumnSpan="2" Text="{Binding ErrorMessage}" TextColor="Red"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Text="Current users with access:" FontSize="Medium" />
+                <CollectionView ItemsSource="{Binding CurrentUsers}" Grid.Row="1">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="vmo:UserVMO">
+                            <Grid Padding="3">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Label Text="{Binding NameToShow}" />
+                                <Label Grid.Row="1" Text="{Binding Permission.Name}" FontSize="Caption" />
+
+                                <Button Grid.RowSpan="2" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="End"
+                                        Text="&#xef66;" FontFamily="MaterialIcons-Regular" TextColor="Red" 
+                                        Command="{Binding RemoveUserCommand, Source={RelativeSource AncestorType={x:Type vm:ShareThingVM}}}" 
+                                        CommandParameter="{Binding}" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
         </Grid>
     </ScrollView>
 </ContentPage>

@@ -14,6 +14,7 @@ namespace NotesAppMAUI.ViewModel
 {
     [QueryProperty(nameof(User), "User")]
     [QueryProperty(nameof(Goal), "Goal")]
+    [QueryProperty(nameof(DueDate), "DueDate")]
     public partial class GoalVM : ObservableObject
     {
         [ObservableProperty]
@@ -40,6 +41,12 @@ namespace NotesAppMAUI.ViewModel
         [ObservableProperty]
         private bool isRefreshing;
 
+        [ObservableProperty]
+        private bool showComplete;
+
+        [ObservableProperty]
+        private DateTime dueDate;
+
         public ICommand RefreshCommand { get; set; }
         public ICommand AddTaskCommand { get; set; }
         public ICommand GoToTaskCommand { get; set; }
@@ -47,8 +54,9 @@ namespace NotesAppMAUI.ViewModel
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand ShareCommand { get; set; }
+        public ICommand ProgressChangedCommand { get; set; }
 
-
+        List<TaskItemVMO> unfilteredTasks;
 
         INotesAPI api;
 
@@ -63,20 +71,45 @@ namespace NotesAppMAUI.ViewModel
             DeleteCommand = new RelayCommand(delete);
             EditCommand = new RelayCommand(edit);
             ShareCommand = new RelayCommand(share);
+            ProgressChangedCommand = new RelayCommand(save);
+
+            this.PropertyChanged += vm_PropertyChanged;
         }
 
         public void Loaded()
         {
             User = (App.Current.MainPage as AppShell).CurrentUser;
 
+            Goal.DueDate = DueDate == DateTime.MinValue ? null : DueDate;
             Time = Goal.DueDate.HasValue ? new TimeSpan(Goal.DueDate.Value.Hour, Goal.DueDate.Value.Minute, Goal.DueDate.Value.Second) : null;
             refreshList();
         }
 
+        private void vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ShowComplete))
+            {
+                filterList();
+            }
+        }
+
         private void refreshList()
         {
-            Tasks = new ObservableCollection<TaskItemVMO>(api.GetTasks(Goal.ID).Select(o => Converters.Convert(o)));
+            unfilteredTasks = api.GetTasks(Goal.ID).Select(o => Converters.Convert(o)).ToList();
+            filterList();
             IsRefreshing = false;
+        }
+
+        private void filterList()
+        {
+            if (ShowComplete)
+            {
+                Tasks = new ObservableCollection<TaskItemVMO>(unfilteredTasks);
+            }
+            else
+            {
+                Tasks = new ObservableCollection<TaskItemVMO>(unfilteredTasks.Where(o => o.Progress < 1));
+            }
         }
 
         private void addTask()
@@ -107,6 +140,7 @@ namespace NotesAppMAUI.ViewModel
             {
                 ["TaskItem"] = vmo,
                 ["User"] = User,
+                ["DueDate"] = vmo.DueDate.HasValue ? vmo.DueDate.Value : DateTime.MinValue,
             });
         }
 

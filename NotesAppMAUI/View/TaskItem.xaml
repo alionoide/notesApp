@@ -45,7 +45,7 @@
                     <TimePicker Time="{Binding Time}" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <Slider Grid.Column="1" Grid.Row="3" Value="{Binding TaskItem.Progress}" />
-                <Picker Grid.Column="1" Grid.Row="4" SelectedItem="{Binding TaskItem.AssignedUser}" ItemsSource="{Binding AvaliableUsers}" ItemDisplayBinding="{Binding NameToShow}" />
+                <Picker Grid.Column="1" Grid.Row="4" SelectedItem="{Binding TaskItem.AssignedUser}" ItemsSource="{Binding AvaliableUsers}" ItemDisplayBinding="{Binding NameToShow}" IsEnabled="{Binding TaskItem.Permission.CanAssign}" />
                 
                 <VerticalStackLayout Grid.Row="5" Grid.ColumnSpan="2">
                     <HorizontalStackLayout>
@@ -66,11 +66,21 @@
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
-                <ProgressBar  Progress="{Binding TaskItem.Progress}" ScaleY="5" HeightRequest="10" />
-                <Label Grid.Row="1" Text="{Binding TaskItem.Text}" />
-
+                <ProgressBar Grid.ColumnSpan="2" Progress="{Binding TaskItem.Progress}" ScaleY="5" HeightRequest="10" IsVisible="{Binding TaskItem.Permission.CanProgress, Converter={toolkit:InvertedBoolConverter}}" />
+                <Slider Grid.ColumnSpan="2" Value="{Binding TaskItem.Progress}" IsVisible="{Binding TaskItem.Permission.CanProgress}" DragCompletedCommand="{Binding ProgressChangedCommand}" />
                 
-                <Label Grid.Row="1" Grid.Column="1" Text="{Binding TaskItem.AssignedUser.NameToShow}" />
+                <Label Grid.Row="1" Text="{Binding TaskItem.Text}" LineBreakMode="WordWrap" />
+
+                <VerticalStackLayout Grid.Column="1" Grid.Row="1"  VerticalOptions="Start" HorizontalOptions="End">
+                    <HorizontalStackLayout HorizontalOptions="End">
+                        <Label Text="Assigned to: " FontSize="Caption" Margin="5,0,5,0" IsVisible="{Binding TaskItem.AssignedUserNotNull}" />
+                        <Label Text="{Binding TaskItem.AssignedUser.NameToShow}"  FontSize="Caption" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout HorizontalOptions="End">
+                        <Label Text="Due: " FontSize="Caption" Margin="5,0,5,0" IsVisible="{Binding TaskItem.DueDateHasValue}" />
+                        <Label Text="{Binding TaskItem.DueDate}"  FontSize="Caption" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
             </Grid>
         </Grid>
     </ScrollView>
