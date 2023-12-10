@@ -417,7 +417,7 @@ namespace NotesAppAPI
                                                         "join Permission p on ss.permissionID = p.permissionID " +
                                                         "join Goal g on ss.goalId = g.goalID " +
                                                         "left join User u on g.assignedUserID = u.userID " +
-                                                        "where ss.userID = 1;", cnn);
+                                                        "where ss.userID = ?;", cnn);
                 command.Parameters.Add(new MySqlParameter("userID", userID));
 
                 var reader = command.ExecuteReader();
@@ -435,7 +435,7 @@ namespace NotesAppAPI
                             Name = reader.GetString(2),
                             Text = reader.GetString(3),
                             Progress = reader.GetDouble(4),
-                            DueDate = reader.GetDateTime(5),
+                            DueDate = reader.GetValue(5) == DBNull.Value ? null : reader.GetDateTime(5),
                             AssignedUser = reader.GetValue(6) == DBNull.Value ? null : new User
                             {
                                 ID = reader.GetInt32(6),
@@ -450,9 +450,9 @@ namespace NotesAppAPI
                             Name = reader.GetString(11),
                             IsAdmin = reader.GetBoolean(12),
                             CanCUD = reader.GetBoolean(13),
-                            CanAssign = reader.GetBoolean(14),
-                            CanProgress = reader.GetBoolean(15),
-                            CanShare = reader.GetBoolean(16),
+                            CanShare = reader.GetBoolean(14),
+                            CanAssign = reader.GetBoolean(15),
+                            CanProgress = reader.GetBoolean(16),
                         }));
                 }
 
@@ -506,9 +506,9 @@ namespace NotesAppAPI
                             Name = reader.GetString(9),
                             IsAdmin = reader.GetBoolean(10),
                             CanCUD = reader.GetBoolean(11),
-                            CanAssign = reader.GetBoolean(12),
-                            CanProgress = reader.GetBoolean(13),
-                            CanShare = reader.GetBoolean(14),
+                            CanShare = reader.GetBoolean(12),
+                            CanAssign = reader.GetBoolean(13),
+                            CanProgress = reader.GetBoolean(14),
                         }
                         ));
                 }

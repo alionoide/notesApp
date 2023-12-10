@@ -24,8 +24,8 @@
             </Grid.ColumnDefinitions>
 
             <HorizontalStackLayout Grid.ColumnSpan="2">
-                <Label Text="Sharing " FontSize="Medium" Margin="0,5,0,5" />
-                <Label Text="{Binding Subject.Name}" FontSize="Medium" FontAttributes="Bold" TextColor="{Binding Subject.ColorAsColor}" />
+                <Label Text="Sharing " FontSize="Medium" Margin="5,0,5,0" />
+                <Label Text="{Binding Subject.Name}" FontSize="Medium" FontAttributes="Bold" />
                 <Label Text="{Binding Goal.Name}" FontSize="Medium" FontAttributes="Bold" />
             </HorizontalStackLayout>
 
@@ -38,12 +38,12 @@
             <Label Grid.Row="3" Grid.ColumnSpan="2" Text="They will be able to: " />
 
             <HorizontalStackLayout Grid.Row="4" Grid.ColumnSpan="2">
-                <Label Margin="0,5,0,5" Text="Admin - Can do everything: " IsVisible="{Binding SelectedPermission.IsAdmin}" FontAttributes="Bold" />
-                <Label Margin="0,5,0,5" Text="Create, Update, and Delete   " IsVisible="{Binding SelectedPermission.CanCUD}" />
-                <Label Margin="0,5,0,5" Text="Assign Users   " IsVisible="{Binding SelectedPermission.CanAssign}" />
-                <Label Margin="0,5,0,5" Text="Share With Others   " IsVisible="{Binding SelectedPermission.CanShare}" />
-                <Label Margin="0,5,0,5" Text="Progress Items   " IsVisible="{Binding SelectedPermission.CanProgress}"/>
-                <Label Margin="0,5,0,5" Text="View" />
+                <Label Margin="5,0,5,0" Text="Admin - Can do everything: " IsVisible="{Binding SelectedPermission.IsAdmin}" FontAttributes="Bold" />
+                <Label Margin="5,0,5,0" Text="Create, Update, and Delete   " IsVisible="{Binding SelectedPermission.CanCUD}" />
+                <Label Margin="5,0,5,0" Text="Assign Users   " IsVisible="{Binding SelectedPermission.CanAssign}" />
+                <Label Margin="5,0,5,0" Text="Share With Others   " IsVisible="{Binding SelectedPermission.CanShare}" />
+                <Label Margin="5,0,5,0" Text="Progress Items   " IsVisible="{Binding SelectedPermission.CanProgress}"/>
+                <Label Margin="5,0,5,0" Text="View" />
             </HorizontalStackLayout>
 
             <Button Grid.Row="5" Grid.ColumnSpan="2" Command="{Binding ShareCommand}" Text="&#xe7fe; SHARE" FontFamily="MaterialIcons-Regular" Margin="10" HorizontalOptions="Start"/>
