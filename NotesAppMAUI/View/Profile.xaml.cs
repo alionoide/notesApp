@@ -13,7 +13,7 @@ namespace NotesAppMAUI.View
             this.vm = vm;
             BindingContext = vm;
 
-            Loaded += loadedRelayToVM;
+            Appearing += loadedRelayToVM;
         }
 
         private void loadedRelayToVM(object sender, EventArgs e)

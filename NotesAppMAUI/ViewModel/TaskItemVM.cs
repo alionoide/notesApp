@@ -52,10 +52,8 @@ namespace NotesAppMAUI.ViewModel
 
         public void Loaded()
         {
-            if (User == null)
-            {
-                User = (App.Current.MainPage as AppShell).CurrentUser;
-            }
+            User = (App.Current.MainPage as AppShell).CurrentUser;
+            
             Time = TaskItem.DueDate.HasValue ? new TimeSpan(TaskItem.DueDate.Value.Hour, TaskItem.DueDate.Value.Minute, TaskItem.DueDate.Value.Second) : null;
         }
 

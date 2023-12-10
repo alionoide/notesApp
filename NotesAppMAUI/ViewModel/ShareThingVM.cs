@@ -56,10 +56,7 @@ namespace NotesAppMAUI.ViewModel
 
         public void Loaded()
         {
-            if (User == null)
-            {
-                User = (App.Current.MainPage as AppShell).CurrentUser;
-            }
+            User = (App.Current.MainPage as AppShell).CurrentUser;
             AvaliableUsers = new ObservableCollection<UserVMO>(api.GetAllUsersNotCurrent(User.ID).Select(Converters.Convert));
             AvaliablePermissions = new ObservableCollection<PermissionVMO>(api.GetPermissions().Select(Converters.Convert));
         }
@@ -73,6 +70,14 @@ namespace NotesAppMAUI.ViewModel
             else if (SelectedUser == null)
             {
                 ErrorMessage = "Must select a user to share to";
+            }
+            else if (Goal != null && !Goal.Permission.CanShare)
+            {
+                ErrorMessage = "Cannot share, you do not have permission!";
+            }
+            else if (Subject != null && !Subject.Permission.CanShare)
+            {
+                ErrorMessage = "Cannot share, you do not have permission!";
             }
             else
             {

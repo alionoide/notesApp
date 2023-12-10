@@ -387,13 +387,13 @@ namespace NotesAppAPI
                 {
                     permissions.Add(new Permission
                     {
-                        ID = (int)reader.GetValue(0),
-                        Name = (string)reader.GetValue(1),
-                        IsAdmin = ((bool)reader.GetValue(2)),
-                        CanCUD = ((bool)reader.GetValue(3)),
-                        CanShare = ((bool)reader.GetValue(4)),
-                        CanAssign = ((bool)reader.GetValue(5)),
-                        CanProgress = ((bool)reader.GetValue(6))
+                        ID = reader.GetInt32(0),
+                        Name = reader.GetString(1),
+                        IsAdmin = reader.GetBoolean(2),
+                        CanCUD = reader.GetBoolean(3),
+                        CanShare = reader.GetBoolean(4),
+                        CanAssign = reader.GetBoolean(5),
+                        CanProgress = reader.GetBoolean(6)
                     });
                 }
 

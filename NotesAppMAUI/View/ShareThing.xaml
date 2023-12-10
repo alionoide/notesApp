@@ -24,29 +24,29 @@
             </Grid.ColumnDefinitions>
 
             <HorizontalStackLayout Grid.ColumnSpan="2">
-                <Label Text="Sharing " FontSize="Medium" />
-                <Label Text="{Binding Subject.Name}" FontSize="Medium" />
-                <Label Text="{Binding Goal.Name}" FontSize="Medium" />
+                <Label Text="Sharing " FontSize="Medium" Margin="0,5,0,5" />
+                <Label Text="{Binding Subject.Name}" FontSize="Medium" FontAttributes="Bold" TextColor="{Binding Subject.ColorAsColor}" />
+                <Label Text="{Binding Goal.Name}" FontSize="Medium" FontAttributes="Bold" />
             </HorizontalStackLayout>
 
-            <Label Grid.Row="1" Text="With user: " />
+            <Label Grid.Row="1" Text="With user: " VerticalOptions="Center" />
             <Picker Grid.Row="1" Grid.Column="1" ItemsSource="{Binding AvaliableUsers}" SelectedItem="{Binding SelectedUser}" ItemDisplayBinding="{Binding NameToShow}" />
     
-            <Label Grid.Row="2" Text="With permission: " />
+            <Label Grid.Row="2" Text="With permission: " VerticalOptions="Center" />
             <Picker Grid.Row="2" Grid.Column="1" ItemsSource="{Binding AvaliablePermissions}" SelectedItem="{Binding SelectedPermission}" ItemDisplayBinding="{Binding Name}" />
 
             <Label Grid.Row="3" Grid.ColumnSpan="2" Text="They will be able to: " />
 
-            <HorizontalStackLayout>
-                <Label Text="Admin - Can do everything: " IsVisible="{Binding SelectedPermission.IsAdmin}" FontAttributes="Bold" />
-                <Label Text="Create, Update, and Delete   " IsVisible="{Binding SelectedPermission.CanCUD}" />
-                <Label Text="Assign Users   " IsVisible="{Binding SelectedPermission.CanAssign}" />
-                <Label Text="Share With Others   " IsVisible="{Binding SelectedPermission.CanShare}" />
-                <Label Text="Progress Items   " IsVisible="{Binding SelectedPermission.CanProgress}" />
-                <Label Text="View" />
+            <HorizontalStackLayout Grid.Row="4" Grid.ColumnSpan="2">
+                <Label Margin="0,5,0,5" Text="Admin - Can do everything: " IsVisible="{Binding SelectedPermission.IsAdmin}" FontAttributes="Bold" />
+                <Label Margin="0,5,0,5" Text="Create, Update, and Delete   " IsVisible="{Binding SelectedPermission.CanCUD}" />
+                <Label Margin="0,5,0,5" Text="Assign Users   " IsVisible="{Binding SelectedPermission.CanAssign}" />
+                <Label Margin="0,5,0,5" Text="Share With Others   " IsVisible="{Binding SelectedPermission.CanShare}" />
+                <Label Margin="0,5,0,5" Text="Progress Items   " IsVisible="{Binding SelectedPermission.CanProgress}"/>
+                <Label Margin="0,5,0,5" Text="View" />
             </HorizontalStackLayout>
 
-            <Button Command="{Binding ShareCommand}" Text="&#xe7fe; SHARE" FontFamily="MaterialIcons-Regular" />
+            <Button Grid.Row="5" Grid.ColumnSpan="2" Command="{Binding ShareCommand}" Text="&#xe7fe; SHARE" FontFamily="MaterialIcons-Regular" Margin="10" HorizontalOptions="Start"/>
         </Grid>
     </ScrollView>
 </ContentPage>

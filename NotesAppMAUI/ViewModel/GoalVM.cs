@@ -46,6 +46,7 @@ namespace NotesAppMAUI.ViewModel
         public ICommand SaveCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
+        public ICommand ShareCommand { get; set; }
 
 
 
@@ -61,14 +62,13 @@ namespace NotesAppMAUI.ViewModel
             SaveCommand = new RelayCommand(save);
             DeleteCommand = new RelayCommand(delete);
             EditCommand = new RelayCommand(edit);
+            ShareCommand = new RelayCommand(share);
         }
 
         public void Loaded()
         {
-            if (User == null)
-            {
-                User = (App.Current.MainPage as AppShell).CurrentUser;
-            }
+            User = (App.Current.MainPage as AppShell).CurrentUser;
+
             Time = Goal.DueDate.HasValue ? new TimeSpan(Goal.DueDate.Value.Hour, Goal.DueDate.Value.Minute, Goal.DueDate.Value.Second) : null;
             refreshList();
         }
@@ -162,6 +162,18 @@ namespace NotesAppMAUI.ViewModel
                     api.DeleteGoal(Converters.Convert(Goal));
                     await AppShell.Current.GoToAsync($"..");
                 }
+            }
+        }
+
+        private void share()
+        {
+            if (Goal.Permission.CanShare)
+            {
+                Shell.Current.GoToAsync($"ShareThing?", new Dictionary<string, object>
+                {
+                    ["Goal"] = Goal,
+                    ["User"] = User,
+                });
             }
         }
     }

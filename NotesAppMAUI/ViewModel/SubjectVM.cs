@@ -40,6 +40,7 @@ namespace NotesAppMAUI.ViewModel
         public ICommand SaveCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
+        public ICommand ShareCommand { get; set; }
 
 
         INotesAPI api;
@@ -54,14 +55,13 @@ namespace NotesAppMAUI.ViewModel
             SaveCommand = new RelayCommand(save);
             DeleteCommand = new RelayCommand(delete);
             EditCommand = new RelayCommand(edit);
+            ShareCommand = new RelayCommand(share);
         }
 
         public void Loaded()
         {
-            if (User == null)
-            {
-                User = (App.Current.MainPage as AppShell).CurrentUser;
-            }
+            User = (App.Current.MainPage as AppShell).CurrentUser;
+            
             refreshList();
         }
 
@@ -134,6 +134,18 @@ namespace NotesAppMAUI.ViewModel
                     api.DeleteSubject(Converters.Convert(Subject));
                     await AppShell.Current.GoToAsync($"..");
                 }
+            }
+        }
+
+        private void share()
+        {
+            if (Subject.Permission.CanShare)
+            {
+                Shell.Current.GoToAsync($"ShareThing?", new Dictionary<string, object>
+                {
+                    ["Subject"] = Subject,
+                    ["User"] = User,
+                });
             }
         }
     }

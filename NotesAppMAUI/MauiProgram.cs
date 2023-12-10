@@ -26,9 +26,9 @@ namespace NotesAppMAUI
 #endif
 
             builder.Services.AddSingleton(typeof(INotesAPI), typeof(NotesAPI));
+
             builder.Services.AddTransient(typeof(SubjectList));
             builder.Services.AddTransient(typeof(SubjectListVM));
-
             builder.Services.AddTransient(typeof(Subject));
             builder.Services.AddTransient(typeof(SubjectVM));
             builder.Services.AddTransient(typeof(Goal));
@@ -36,14 +36,16 @@ namespace NotesAppMAUI
             builder.Services.AddTransient(typeof(TaskItem));
             builder.Services.AddTransient(typeof(TaskItemVM));
 
+            builder.Services.AddTransient(typeof(NewUser));
+            builder.Services.AddTransient(typeof(NewUserVM));
             builder.Services.AddTransient(typeof(Profile));
             builder.Services.AddTransient(typeof(ProfileVM));
 
-            builder.Services.AddTransient(typeof(NewUser));
-            builder.Services.AddTransient(typeof(NewUserVM));
-
+            builder.Services.AddTransient(typeof(ShareThing));
+            builder.Services.AddTransient(typeof(ShareThingVM));
             builder.Services.AddTransient(typeof(Shared));
             builder.Services.AddTransient(typeof(SharedVM));
+
 
 
             return builder.Build();

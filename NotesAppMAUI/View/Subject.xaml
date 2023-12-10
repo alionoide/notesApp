@@ -23,6 +23,13 @@
                   Glyph="&#xe3c9;"/>
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
+        <ToolbarItem Command="{Binding ShareCommand}" Text="Share">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                  FontFamily="MaterialIcons-Regular"
+                  Glyph="&#xe7fe;"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <ScrollView>

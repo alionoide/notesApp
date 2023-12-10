@@ -51,10 +51,7 @@ namespace NotesAppMAUI.ViewModel
 
         public void Loaded()
         {
-            if (User == null)
-            {
-                User = (App.Current.MainPage as AppShell).CurrentUser;
-            }
+            User = (App.Current.MainPage as AppShell).CurrentUser;
             refreshList();
             refreshGoalList();
         }

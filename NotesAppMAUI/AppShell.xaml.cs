@@ -15,7 +15,7 @@ namespace NotesAppMAUI
             Routing.RegisterRoute(nameof(Goal), typeof(Goal));
             Routing.RegisterRoute(nameof(TaskItem), typeof(TaskItem));
             Routing.RegisterRoute(nameof(NewUser), typeof(NewUser));
-            Routing.RegisterRoute(nameof(Share), typeof(Share));
+            Routing.RegisterRoute(nameof(ShareThing), typeof(ShareThing));
         }
     }
 }
