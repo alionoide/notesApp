@@ -14,6 +14,8 @@ namespace NotesAppAPI
         bool ChangePassword(int userID, string password, string newPassword);
         IEnumerable<User> GetAvaliableUsers(int goalID);
         IEnumerable<Tuple<Subject, Permission>> GetSubjects(int userID);
+        IEnumerable<Permission> GetPermissions();
+        IEnumerable<User> GetAllUsersNotCurrent(int currentUserID);
         int AddSubject(Subject subject);
         void UpdateSubject(Subject subject);
         void DeleteSubject(Subject subject);

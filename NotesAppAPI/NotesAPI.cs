@@ -246,6 +246,40 @@ namespace NotesAppAPI
             }
         }
 
+        public IEnumerable<User> GetAllUsersNotCurrent(int currentUserID)
+        {
+            using (MySqlConnection cnn = new MySqlConnection(builder.ConnectionString))
+            {
+                List<User> list = new List<User>();
+
+                cnn.Open();
+
+                MySqlCommand command = new MySqlCommand("select userID, uName, email, displayName " +
+                                                        "from User " +
+                                                        "where userID <> ?;", cnn);
+                command.Parameters.Add(new MySqlParameter("currentUserID", currentUserID));
+
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    list.Add(new User
+                    {
+                        ID = reader.GetInt32(0),
+                        Username = reader.GetString(1),
+                        Email = reader.GetString(2),
+                        DisplayName = reader.GetValue(3) == DBNull.Value ? null : (string)reader.GetValue(3),
+                    });
+                }
+
+                reader.Close();
+                command.Dispose();
+                cnn.Close();
+
+                return list;
+            }
+        }
+
         public IEnumerable<User> GetAvaliableUsers(int goalID)
         {
             using (MySqlConnection cnn = new MySqlConnection(builder.ConnectionString))
@@ -440,7 +474,7 @@ namespace NotesAppAPI
 
                 MySqlCommand command = new MySqlCommand("select s.subjectID, s.name, s.description, s.color, u.userID, u.uName, u.email, u.displayName, p.* " +
                                                         "from SubjectShare ss " +
-                                                        "join Permission p on ss.permissionID = p.permissionID" +
+                                                        "join Permission p on ss.permissionID = p.permissionID " +
                                                         "join Subject s on ss.subjectID = s.subjectID " +
                                                         "join User u on s.ownerID = u.userID " +
                                                         "where ss.userID = ?;", cnn);

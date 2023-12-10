@@ -7,23 +7,15 @@
              x:DataType="vm:SharedVM"
              Title="Shared With Me">
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding AddSubjectCommand}" Text="Add Subject">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource
-                  FontFamily="MaterialIcons-Regular"
-                  Glyph="&#xe145;"/>
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
-    </ContentPage.ToolbarItems>
-
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-
+            <Label Text="Subjects: " FontSize="Medium"/>
             <RefreshView Grid.Row="1"
                 Command="{Binding RefreshCommand}"
                              IsRefreshing="{Binding IsRefreshing}">
@@ -42,6 +34,41 @@
 
                                 <Label Grid.Row="0" Text="{Binding Name}" FontSize="Medium" LineBreakMode="TailTruncation" MaxLines="1" />
                                 <Label Grid.Row="1" Text="{Binding Description}" FontSize="Caption" LineBreakMode="WordWrap" MaxLines="2" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
+            <Label Grid.Row="2" Text="Goals: " FontSize="Medium"/>
+            <RefreshView Grid.Row="3"
+                Command="{Binding RefreshGoalsCommand}"
+                             IsRefreshing="{Binding IsGoalsRefreshing}">
+                <CollectionView x:Name="SharedGoalView"
+                                ItemsSource="{Binding Goals}"
+                                SelectionMode="Single"
+                                SelectionChangedCommand="{Binding GoToGoalCommand}"
+                                SelectionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=SelectedItem}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="vmo:GoalVMO">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Row="0" Text="{Binding Name}" FontSize="Body" LineBreakMode="TailTruncation" MaxLines="1" />
+                                <Label Grid.Row="1" Text="{Binding Text}" FontSize="Caption" LineBreakMode="WordWrap" MaxLines="2" />
+                                <ProgressBar Grid.Row="2" Progress="{Binding Progress}" />
+
+                                <VerticalStackLayout Grid.Column="1" Grid.RowSpan="3" VerticalOptions="Start">
+                                    <Label Text="{Binding AssignedUser.NameToShow}" HorizontalTextAlignment="End" HorizontalOptions="End" />
+                                    <Label VerticalTextAlignment="End" Text="{Binding DueDate}" HorizontalTextAlignment="End" HorizontalOptions="End" />
+                                </VerticalStackLayout>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

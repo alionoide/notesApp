@@ -17,15 +17,9 @@ namespace NotesAppMAUI
         public static SubjectVMO Convert(Tuple<Subject, Permission> model)
         {
             if (model == null) { return null; }
-            return new SubjectVMO
-            {
-                ID = model.Item1.ID,
-                Name = model.Item1.Name,
-                Description = model.Item1.Description,
-                Color = model.Item1.Color,
-                Owner = Convert(model.Item1.Owner),
-                Permission = Convert(model.Item2)
-            };
+            SubjectVMO vmo = Convert(model.Item1);
+            vmo.Permission = Convert(model.Item2);
+            return vmo;
         }
 
         public static Subject Convert(SubjectVMO vmo)
@@ -136,6 +130,14 @@ namespace NotesAppMAUI
                 Goal = Convert(model.Goal),
                 Progress = model.Progress,
             };
+        }
+
+        internal static GoalVMO Convert(Tuple<Goal, Permission> model)
+        {
+            if (model == null) { return null; }
+            GoalVMO vmo = Convert(model.Item1);
+            vmo.Permission = Convert(model.Item2);
+            return vmo;
         }
 
         private static SubjectVMO Convert(Subject model)

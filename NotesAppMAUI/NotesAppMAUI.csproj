@@ -59,6 +59,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="View\ShareThing.xaml.cs">
+	    <DependentUpon>ShareThing.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="View\NewUser.xaml.cs">
 	    <DependentUpon>NewUser.xaml</DependentUpon>
 	  </Compile>
@@ -83,6 +86,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="View\ShareThing.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\NewUser.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

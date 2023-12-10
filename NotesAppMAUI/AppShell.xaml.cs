@@ -11,11 +11,11 @@ namespace NotesAppMAUI
         {
             InitializeComponent();
 
-            Routing.RegisterRoute(nameof(SubjectList), typeof(SubjectList));
             Routing.RegisterRoute(nameof(Subject), typeof(Subject));
             Routing.RegisterRoute(nameof(Goal), typeof(Goal));
             Routing.RegisterRoute(nameof(TaskItem), typeof(TaskItem));
             Routing.RegisterRoute(nameof(NewUser), typeof(NewUser));
+            Routing.RegisterRoute(nameof(Share), typeof(Share));
         }
     }
 }

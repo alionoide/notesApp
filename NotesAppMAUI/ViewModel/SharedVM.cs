@@ -23,11 +23,18 @@ namespace NotesAppMAUI.ViewModel
         private ObservableCollection<SubjectVMO> subjects;
 
         [ObservableProperty]
+        private ObservableCollection<GoalVMO> goals;
+
+        [ObservableProperty]
         private bool isRefreshing;
 
+        [ObservableProperty]
+        private bool isGoalsRefreshing;
+
         public ICommand RefreshCommand { get; set; }
-        public ICommand AddSubjectCommand { get; set; }
         public ICommand GoToSubjectCommand { get; set; }
+        public ICommand RefreshGoalsCommand { get; set; }
+        public ICommand GoToGoalCommand { get; set; }
 
 
         INotesAPI api;
@@ -37,8 +44,9 @@ namespace NotesAppMAUI.ViewModel
             this.api = api;
 
             RefreshCommand = new RelayCommand(refreshList);
-            AddSubjectCommand = new RelayCommand(addSubject);
             GoToSubjectCommand = new RelayCommand<SubjectVMO>(goToSubject);
+            RefreshGoalsCommand = new RelayCommand(refreshGoalList);
+            GoToGoalCommand = new RelayCommand<GoalVMO>(goToGoal);
         }
 
         public void Loaded()
@@ -48,37 +56,18 @@ namespace NotesAppMAUI.ViewModel
                 User = (App.Current.MainPage as AppShell).CurrentUser;
             }
             refreshList();
+            refreshGoalList();
         }
 
         private void refreshList()
         {
-            Subjects = new ObservableCollection<SubjectVMO>(api.GetSubjects(User.ID).Select(o => Converters.Convert(o)));
+            Subjects = new ObservableCollection<SubjectVMO>(api.GetSharedSubjects(User.ID).Select(o => Converters.Convert(o)));
             IsRefreshing = false;
         }
-
-        private void addSubject()
+        private void refreshGoalList()
         {
-            var newSubject = new SubjectVMO 
-            {
-                ID = -1,
-                Name = "New Subject",
-                Description = string.Empty,
-                Color = null,
-                Owner = User,
-                Permission = new PermissionVMO
-                {
-                    ID = 0,
-                    Name = "Owner",
-                    IsAdmin = true,
-                    CanCUD = true,
-                    CanAssign = true,
-                    CanProgress = true,
-                    CanShare = true,
-                }
-            };
-
-            newSubject.ID = api.AddSubject(Converters.Convert(newSubject));
-            goToSubject(newSubject);
+            Goals = new ObservableCollection<GoalVMO>(api.GetSharedGoals(User.ID).Select(o => Converters.Convert(o)));
+            IsGoalsRefreshing = false;
         }
 
         private void goToSubject(SubjectVMO vmo)
@@ -86,6 +75,14 @@ namespace NotesAppMAUI.ViewModel
             Shell.Current.GoToAsync($"Subject?", new Dictionary<string, object>
             {
                 ["Subject"] = vmo,
+                ["User"] = User,
+            });
+        }
+        private void goToGoal(GoalVMO vmo)
+        {
+            Shell.Current.GoToAsync($"Goal?", new Dictionary<string, object>
+            {
+                ["Goal"] = vmo,
                 ["User"] = User,
             });
         }
