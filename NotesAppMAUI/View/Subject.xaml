@@ -96,9 +96,9 @@
                 </HorizontalStackLayout>
                 
                 <RefreshView Grid.Row="2" Grid.ColumnSpan="2"
-                        Command="{Binding RefreshCommand}"
+                             Command="{Binding RefreshCommand}"
                              IsRefreshing="{Binding IsRefreshing}">
-                    <CollectionView
+                    <CollectionView x:Name="collectionView"
                             ItemsSource="{Binding Goals}"
                             SelectionMode="Single"
                             SelectionChangedCommand="{Binding GoToGoalCommand}"

@@ -26,6 +26,9 @@ namespace NotesAppMAUI.ViewModel
         private ObservableCollection<GoalVMO> goals;
 
         [ObservableProperty]
+        ObservableCollection<GoalVMO> unfilteredGoals;
+
+        [ObservableProperty]
         private string errorMessage;
 
         [ObservableProperty]
@@ -44,8 +47,6 @@ namespace NotesAppMAUI.ViewModel
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand ShareCommand { get; set; }
-
-        List<GoalVMO> unfilteredGoals;
 
         INotesAPI api;
 
@@ -67,7 +68,7 @@ namespace NotesAppMAUI.ViewModel
         public void Loaded()
         {
             User = (App.Current.MainPage as AppShell).CurrentUser;
-            
+            Goals = new ObservableCollection<GoalVMO>(api.GetGoals(Subject.ID).Select(o => Converters.Convert(o)));
             refreshList();
         }
 
@@ -81,7 +82,7 @@ namespace NotesAppMAUI.ViewModel
 
         private void refreshList()
         {
-            unfilteredGoals = api.GetGoals(Subject.ID).Select(o => Converters.Convert(o)).ToList();
+            UnfilteredGoals = new ObservableCollection<GoalVMO>(api.GetGoals(Subject.ID).Select(o => Converters.Convert(o)));
             filterList();
             IsRefreshing = false;
         }
@@ -90,11 +91,11 @@ namespace NotesAppMAUI.ViewModel
         {
             if (ShowComplete)
             {
-                Goals = new ObservableCollection<GoalVMO>(unfilteredGoals);
+                Goals = new ObservableCollection<GoalVMO>(UnfilteredGoals);
             }
             else
             {
-                Goals = new ObservableCollection<GoalVMO>(unfilteredGoals.Where(o => o.Progress < 1));
+                Goals = new ObservableCollection<GoalVMO>(UnfilteredGoals.Where(o => o.Progress < 1));
             }
         }
 
