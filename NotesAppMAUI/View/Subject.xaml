@@ -34,11 +34,6 @@
 
     <ScrollView>
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
             <Grid IsVisible="{Binding EditModeEnabled}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />

@@ -13,8 +13,8 @@ namespace NotesAppAPI
         {
             builder = new MySqlConnectionStringBuilder();
 
-            //builder.Server = "houserhouse.com";
-            builder.Server = "209.159.220.14";
+            builder.Server = "sdsmt.us";
+            builder.Port = 9306;
             builder.UserID = "app";
             builder.Password = Environment.GetEnvironmentVariable("NOTES_APP_DB_PASSWORD");
             builder.Database = "notesapp";
